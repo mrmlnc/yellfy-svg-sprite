@@ -3,7 +3,9 @@
 import { ICleanOptions } from './interfaces';
 
 export function clean(content: string, options: ICleanOptions): string {
-  content = content.replace(/<.*?(xml\s|dtd).*?>/g, '');
+  content = content
+    .replace(/<.*?(xml\s|dtd).*?>/g, '')
+    .replace(/[\r\n\t]|\s{2,}/g, '');
 
   if (options.stripComment) {
     content = content.replace(/<!--.*?-->/g, '');
@@ -34,8 +36,6 @@ export function clean(content: string, options: ICleanOptions): string {
       .replace(/<style(?:.|\n)*?style>/g, '')
       .replace(/\sfill(?::|=").*?[;"]/g, '');
   }
-  if (options.stripIndent) {
-    content = content.replace(/[\r\n\t]|\s{2,}/g, '');
   }
 
   return content;

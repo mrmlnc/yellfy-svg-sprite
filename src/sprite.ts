@@ -42,7 +42,6 @@ export function makeSprite(dir: string, options?: IOptions): Promise<IResult> {
     stripDescription: false,
     stripEmptyDefinition: false,
     stripEmptyGroup: false,
-    stripIndent: false,
     stripExtraAttributes: false,
     stripTitle: false,
     stripFill: false,

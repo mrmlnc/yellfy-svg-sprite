@@ -9,7 +9,6 @@ export interface IAttrs {
 }
 
 export interface ICleanOptions {
-  stripIndent?: boolean;
   stripEmptyGroup?: boolean;
   stripEmptyDefinition?: boolean;
   stripComment?: boolean;

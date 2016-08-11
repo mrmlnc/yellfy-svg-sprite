@@ -89,7 +89,6 @@ The name suffix for each icon.
   stripDescription: false,     // Strip <desc>*</desc>
   stripEmptyDefinition: false, // Strip empty <defs></defs>
   stripEmptyGroup: false,      // Strip empty <g></g>
-  stripIndent: false,          // Strip empty indent, newlines, two or more consecutive spaces
   stripExtraAttributes: false, // Strip Sketch and xmlns:* attributes
   stripTitle: false,           // Strip <title>*</title>
   stripFill: false,            // Strip `fill` attribute (fill="") or fill in the `style` attribute (style="fill:*;")

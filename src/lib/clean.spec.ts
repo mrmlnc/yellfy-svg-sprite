@@ -67,14 +67,6 @@ describe('Clean', () => {
     assert.ok(!/<g><\/g>/g.test(content));
   });
 
-  it('Should strip indent.', () => {
-    const content = clean(fixtures, {
-      stripIndent: true
-    });
-
-    assert.ok(!/[\r\n\t]|\s{2,}/g.test(content));
-  });
-
   it('Should strip extra attributes.', () => {
     const content = clean(fixtures, {
       stripExtraAttributes: true
