@@ -110,4 +110,17 @@ describe('Sprite', function() {
     });
   });
 
+  it('Should work with sprites.', () => {
+    return sprite.makeSprite('fixtures').then((result) => {
+      assert.ok(result.sprite);
+
+      assert.ok(/id="defs-icon-1"/.test(result.sprite));
+      assert.ok(/id="defs-icon-2"/.test(result.sprite));
+      assert.ok(/id="symbol-icon-1"/.test(result.sprite));
+      assert.ok(/id="symbol-icon-2"/.test(result.sprite));
+      assert.ok(/id="rainbow"/.test(result.sprite));
+      assert.ok(/id="unicorn"/.test(result.sprite));
+    });
+  });
+
 });

@@ -1,8 +1,6 @@
 'use strict';
 
-import * as path from 'path';
-
-import { IFile, IAttrs, IOptions } from './interfaces';
+import { IFile, IAttrs } from './interfaces';
 
 export function makeAttributes(attrs: IAttrs): string {
   let str = '';
@@ -13,12 +11,7 @@ export function makeAttributes(attrs: IAttrs): string {
   return str;
 }
 
-export function updateAttributes(file: IFile, options: IOptions): string {
-  const attrs = options.iconAttrs;
-  const name = options.iconPrefix + path.basename(file.name, '.svg') + options.iconSuffix;
-
-  attrs.id = name;
-
+export function updateAttributes(file: IFile, attrs: IAttrs): string {
   Object.keys(attrs).forEach((property) => {
     const regexp = new RegExp(` ${property}="([^"]+)"`);
     if (regexp.test(file.content)) {

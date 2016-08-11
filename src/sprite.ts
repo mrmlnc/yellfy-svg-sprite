@@ -71,10 +71,29 @@ export function makeSprite(dir: string, options?: IOptions): Promise<IResult> {
       return readFilePromise(filepath, 'utf-8').then((content) => ({ name, content }));
     })))
     .then((files: IFile[]) => {
+      let sprite = false;
       const icons = files.map((file) => {
+        if (file.content.indexOf('<symbol') !== -1) {
+          sprite = true;
+          file.content = file.content.replace(/<\/*svg.*?>/g, '');
+        }
+        if (file.content.indexOf('<defs') !== -1) {
+          sprite = true;
+          file.content = file.content
+            .replace(/<\/*(?:svg|defs).*?>/g, '')
+            .replace(/<(\/*)g(.*)?>/g, '<$1svg$2>');
+        }
+
+        options.iconAttrs.id = options.iconPrefix + path.basename(file.name, '.svg') + options.iconSuffix;
+        if (sprite) {
+          delete options.iconAttrs.id;
+        }
+
         file.content = clean(file.content, options.clean);
-        file.content = updateAttributes(file, options);
-        file.content = file.content.replace(/\<svg/g, '<symbol').replace(/\<\/svg>/g, '</symbol>');
+        file.content = updateAttributes(file, options.iconAttrs);
+        file.content = file.content.replace(/<(\/*)svg/g, '<$1symbol');
+
+        sprite = false;
 
         return file.content;
       });

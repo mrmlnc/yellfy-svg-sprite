@@ -23,13 +23,9 @@ describe('Attributes', () => {
     };
 
     const content = updateAttributes(file, {
-      iconAttrs: {
-        id: file.name,
-        one: 'test',
-        three: 'test'
-      },
-      iconPrefix: '',
-      iconSuffix: ''
+      id: file.name,
+      one: 'test',
+      three: 'test'
     });
 
     const expected = '<svg three="test" id="test" one="test" two="none"><path d=""></path></svg>';
