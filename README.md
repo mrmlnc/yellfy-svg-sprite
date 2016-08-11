@@ -31,7 +31,7 @@ svgSprite.makeSprite('dir/containing/svg/files').then((result) => {
 
 ### `makeSprite(dir, [options])` → `result`
 
-#### Options
+### Options
 
 **ignore**
 
@@ -78,7 +78,7 @@ The name prefix for each icon.
 
 The name suffix for each icon.
 
-#### result
+### result
 
 **sprite**
 
