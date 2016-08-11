@@ -21,7 +21,11 @@
   "typings": "out/sprite.d.ts",
   "files": [
     "out/sprite.js",
-    "out/sprite.d.ts"
+    "out/sprite.d.ts",
+    "out/interfaces.d.ts",
+    "out/lib/attributes.js",
+    "out/lib/clean.js",
+    "out/lib/io.js"
   ],
   "keywords": [
     "yellfy",

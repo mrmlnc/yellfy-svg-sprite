@@ -5,13 +5,19 @@ import * as fs from 'fs';
 
 import * as sprite from './sprite';
 
+import { IAttrs } from './interfaces';
+
 describe('Sprite', function() {
 
   it('Should work with default options.', () => {
     return sprite.makeSprite('fixtures').then((result) => {
       assert.ok(result.sprite);
+
       assert.ok(/id="rainbow"/.test(result.sprite));
       assert.ok(/id="unicorn"/.test(result.sprite));
+
+      assert.ok(/<!DOCTYPE svg PUBLIC/.test(result.sprite));
+      assert.ok(/<svg xmlns="http:/.test(result.sprite));
       assert.ok(/<\?xml version="1\.0" encoding="iso-8859-1"\?>/.test(result.sprite));
     });
   });
@@ -19,42 +25,54 @@ describe('Sprite', function() {
   it('Should work with `inline` option.', () => {
     return sprite.makeSprite('fixtures', { inline: true }).then((result) => {
       assert.ok(result.sprite);
+
+      assert.ok(/<svg width="0" height="0" style="position:absolute">/.test(result.sprite));
       assert.ok(/id="rainbow"/.test(result.sprite));
       assert.ok(/id="unicorn"/.test(result.sprite));
+
+      assert.ok(!/<!DOCTYPE svg PUBLIC/.test(result.sprite));
+      assert.ok(!/<svg xmlns="http:/.test(result.sprite));
       assert.ok(!/<\?xml version="1\.0" encoding="iso-8859-1"\?>/.test(result.sprite));
     });
   });
 
   it('Should work with `inline` option.', () => {
-    return sprite.makeSprite('fixtures', {
-      parentAttrs: {
+    const options = {
+      parentAttrs: <IAttrs>{
         rainbow: 'test',
         unicorn: 0
       }
-    }).then((result) => {
+    };
+
+    return sprite.makeSprite('fixtures', options).then((result) => {
       assert.ok(result.sprite);
       assert.ok(/rainbow="test"\sunicorn="0"/.test(result.sprite));
     });
   });
 
   it('Should work with `iconPrefix` & `iconSuffix` options.', () => {
-    return sprite.makeSprite('fixtures', {
+    const options = {
       iconPrefix: 'prefix-',
       iconSuffix: '-suffix'
-    }).then((result) => {
+    };
+
+    return sprite.makeSprite('fixtures', options).then((result) => {
       assert.ok(result.sprite);
+
       assert.ok(/id="prefix-rainbow-suffix"/.test(result.sprite));
       assert.ok(/id="prefix-unicorn-suffix"/.test(result.sprite));
     });
   });
 
   it('Should work with `iconAttrs` option.', () => {
-    return sprite.makeSprite('fixtures', {
-      iconAttrs: {
+    const options = {
+      iconAttrs: <IAttrs>{
         rainbow: 'test',
         unicorn: 0
       }
-    }).then((result) => {
+    };
+
+    return sprite.makeSprite('fixtures', options).then((result) => {
       assert.ok(result.sprite);
       assert.ok(/unicorn="0"\srainbow="test"/.test(result.sprite));
     });
@@ -72,10 +90,9 @@ describe('Sprite', function() {
   });
 
   it('Should work with `ignore` option.', () => {
-    return sprite.makeSprite('fixtures', {
-      ignore: ['rainbow.svg']
-    }).then((result) => {
+    return sprite.makeSprite('fixtures', { ignore: ['rainbow.svg'] }).then((result) => {
       assert.ok(result.sprite);
+
       assert.ok(!/id="rainbow"/.test(result.sprite));
       assert.ok(/id="unicorn"/.test(result.sprite));
     });
