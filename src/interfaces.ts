@@ -9,13 +9,37 @@ export interface IAttrs {
 }
 
 export interface ICleanOptions {
-  stripEmptyGroup?: boolean;
-  stripEmptyDefinition?: boolean;
+  /**
+   * Strip comments.
+   */
   stripComment?: boolean;
+  /**
+   * Strip empty `defs` tags.
+   */
+  stripEmptyDefinition?: boolean;
+  /**
+   * Strip empty `g` tags.
+   */
+  stripEmptyGroup?: boolean;
+  /**
+   * Strip `title` tags.
+   */
   stripTitle?: boolean;
+  /**
+   * Strip `desc` tags.
+   */
   stripDescription?: boolean;
+  /**
+   * Strip Sketch, xmlns and xmlns:* attributes.
+   */
   stripExtraAttributes?: boolean;
+  /**
+   * Strip `fill` attributes and property (style="fill:*;").
+   */
   stripFill?: boolean;
+  /**
+   * Strip `style` tags and attributes.
+   */
   stripStyles?: boolean;
 }
 
