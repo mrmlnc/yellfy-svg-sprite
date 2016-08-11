@@ -44,7 +44,9 @@ export function makeSprite(dir: string, options?: IOptions): Promise<IResult> {
     stripEmptyGroup: false,
     stripIndent: false,
     stripExtraAttributes: false,
-    stripTitle: false
+    stripTitle: false,
+    stripFill: false,
+    stripStyles: false
   }, options.clean);
 
   options.ignore.push('!*.svg');

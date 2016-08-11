@@ -16,6 +16,8 @@ export interface ICleanOptions {
   stripTitle?: boolean;
   stripDescription?: boolean;
   stripExtraAttributes?: boolean;
+  stripFill?: boolean;
+  stripStyles?: boolean;
 }
 
 export interface IOptions {

@@ -7,6 +7,15 @@ import { clean } from './clean';
 const fixtures = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="24px" height="25px" viewBox="0 0 24 25" version="1.1" xmlns=">http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
   <!-- Generator: Sketch 3.3 (11970) -- http://www.bohemiancoding.com/sketch -->
+  <style>
+    /* <![CDATA[ */
+    circle {
+      fill: orange;
+      stroke: black;
+      stroke-width: 10px; // Note that the value of a pixel depend on the viewBox
+    }
+    /* ]]> */
+  </style>
   <title>add</title>
   <desc>Created with Sketch.</desc>
   <defs></defs>
@@ -81,6 +90,23 @@ describe('Clean', () => {
     });
 
     assert.ok(!/<title>.*?<\/title>/g.test(content));
+  });
+
+  it('Should strip fill.', () => {
+    const content = clean(fixtures, {
+      stripFill: true
+    });
+
+    assert.ok(!/\s*fill(?::|=").*?[;"]/g.test(content));
+  });
+
+  it('Should strip styles.', () => {
+    const content = clean(fixtures, {
+      stripStyles: true
+    });
+
+    assert.ok(!/<style(?:.|\n)*?style>/g.test(content));
+    assert.ok(!/style=".*?"/g.test(content));
   });
 
 });
