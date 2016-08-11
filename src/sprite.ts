@@ -72,11 +72,11 @@ export function makeSprite(dir: string, options?: IOptions): Promise<IResult> {
     .then((files: IFile[]) => {
       let sprite = false;
       const icons = files.map((file) => {
-        if (file.content.indexOf('<symbol') !== -1) {
+        if (/svg.*[\n\r\t]*.*?symbol/g.test(file.content)) {
           sprite = true;
           file.content = file.content.replace(/<\/*svg.*?>/g, '');
         }
-        if (file.content.indexOf('<defs') !== -1) {
+        if (/svg.*[\n\r\t]*.*?defs.*[\n\r\t]*.*?g/g.test(file.content)) {
           sprite = true;
           file.content = file.content
             .replace(/<\/*(?:svg|defs).*?>/g, '')
