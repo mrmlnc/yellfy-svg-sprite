@@ -1,0 +1,43 @@
+{
+  "name": "yellfy-svg-sprite",
+  "version": "1.0.0-alpha.0",
+  "description": "A very simple module to generate SVG sprites.",
+  "license": "MIT",
+  "repository": "mrmlnc/yellfy-svg-sprite",
+  "author": {
+    "name": "Denis Malinochkin",
+    "url": "canonium.com"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "scripts": {
+    "pretest": "rimraf out .tmp && tslint src/**/*.ts && tsc",
+    "test": "mocha --recursive out",
+    "prepublish": "npm run test",
+    "start": "rimraf out .tmp && tsc --watch"
+  },
+  "main": "out/sprite.js",
+  "typings": "out/sprite.d.ts",
+  "files": [
+    "out/sprite.js",
+    "out/sprite.d.ts"
+  ],
+  "keywords": [
+    "yellfy",
+    "svg",
+    "sprite",
+    "symbol",
+    "symbols"
+  ],
+  "dependencies": {
+    "mkdirp": "^0.5.1",
+    "recursive-readdir": "^2.0.0"
+  },
+  "devDependencies": {
+    "rimraf": "^2.5.0",
+    "typescript": "^1.8.0",
+    "tslint": "^3.13.0",
+    "mocha": "^3.0.0-2"
+  }
+}
