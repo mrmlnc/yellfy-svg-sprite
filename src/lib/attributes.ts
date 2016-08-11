@@ -20,7 +20,7 @@ export function updateAttributes(file: IFile, options: IOptions): string {
   attrs.id = name;
 
   Object.keys(attrs).forEach((property) => {
-    const regexp = new RegExp(` ${property}="([^"]+)"`, 'g');
+    const regexp = new RegExp(` ${property}="([^"]+)"`);
     if (regexp.test(file.content)) {
       file.content = file.content.replace(regexp, ` ${property}="${attrs[property]}"`);
     } else {
