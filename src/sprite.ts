@@ -38,14 +38,14 @@ export function makeSprite(dir: string, options?: IOptions): Promise<IResult> {
   }, options);
 
   options.clean = Object.assign({
-    stripComment: false,
-    stripDescription: false,
-    stripEmptyDefinition: false,
-    stripEmptyGroup: false,
-    stripExtraAttributes: false,
-    stripTitle: false,
-    stripFill: false,
-    stripStyles: false
+    stripComment: true,
+    stripEmptyDefinition: true,
+    stripEmptyGroup: true,
+    stripTitle: true,
+    stripDescription: true,
+    stripExtraAttributes: true,
+    stripFill: true,
+    stripStyles: true
   }, options.clean);
 
   options.ignore.push('!*.svg');

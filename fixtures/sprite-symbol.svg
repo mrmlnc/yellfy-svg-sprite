@@ -1,10 +1,10 @@
 <svg>
 
-  <symbol id="symbol-icon-1">
+  <symbol id="symbol-icon-1" fill="#000">
     <!-- all the paths and shapes and whatnot for this icon -->
   </symbol>
 
-  <symbol id="symbol-icon-2">
+  <symbol id="symbol-icon-2" style="fill:#000;">
     <!-- all the paths and shapes and whatnot for this icon -->
   </symbol>
 

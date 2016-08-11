@@ -6,7 +6,7 @@ import { clean } from './clean';
 
 const fixtures = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="24px" height="25px" viewBox="0 0 24 25" version="1.1" xmlns=">http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-  <!-- Generator: Sketch 3.3 (11970) -- http://www.bohemiancoding.com/sketch -->
+  <!-- Generator: Sketch 3.3 (11970) -- http://www.bohemiancoding.com -->
   <style>
     /* <![CDATA[ */
     circle {
@@ -23,6 +23,7 @@ const fixtures = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <rect id="Rectangle-14" sketch:type="MSShapeGroup" x="0" y="0" width="24" height="24" rx="2"></rect>
     <path d="M13,13 L13,19 L11,19 L11,13 L5,13 L5,11 L11,11 L11,5 L13,5 L13,11 L19,11 L19,13 L13,13 Z" id="Fill-5" fill="#000000" sketch:type="MSShapeGroup"></path>
   </g>
+  <g></g>
   <g>
   </g>
 </svg>`;
@@ -32,7 +33,7 @@ describe('Clean', () => {
   it('Should strip declarations.', () => {
     const content = clean(fixtures, {});
 
-    assert.ok(!/<.*?(xml\s|dtd).*?>/g.test(content));
+    assert.ok(content.indexOf('?xml') === -1);
   });
 
   it('Should strip comments.', () => {
@@ -40,7 +41,7 @@ describe('Clean', () => {
       stripComment: true,
     });
 
-    assert.ok(!/<!--.*?-->/g.test(content));
+    assert.ok(content.indexOf('<!--') === -1);
   });
 
   it('Should strip descriptions.', () => {
@@ -48,7 +49,7 @@ describe('Clean', () => {
       stripDescription: true
     });
 
-    assert.ok(!/<desc>.*?<\/desc>/g.test(content));
+    assert.ok(content.indexOf('<desc></desc>') === -1);
   });
 
   it('Should strip definitions.', () => {
@@ -56,7 +57,7 @@ describe('Clean', () => {
       stripEmptyDefinition: true
     });
 
-    assert.ok(!/<defs><\/defs>/g.test(content));
+    assert.ok(content.indexOf('<defs></defs>') === -1);
   });
 
   it('Should strip groups.', () => {
@@ -64,7 +65,7 @@ describe('Clean', () => {
       stripEmptyGroup: true
     });
 
-    assert.ok(!/<g><\/g>/g.test(content));
+    assert.ok(content.indexOf('<g></g>') === -1);
   });
 
   it('Should strip extra attributes.', () => {
@@ -72,8 +73,8 @@ describe('Clean', () => {
       stripExtraAttributes: true
     });
 
-    assert.ok(!/\ssketch:type=".*?"/g.test(content));
-    assert.ok(!/\s(xmlns|xmlns:.*?)=".*?"/g.test(content));
+    assert.ok(content.indexOf('sketch') === -1);
+    assert.ok(content.indexOf('xmlns') === -1);
   });
 
   it('Should strip indent.', () => {
@@ -81,7 +82,7 @@ describe('Clean', () => {
       stripTitle: true
     });
 
-    assert.ok(!/<title>.*?<\/title>/g.test(content));
+    assert.ok(content.indexOf('title') === -1);
   });
 
   it('Should strip fill.', () => {
@@ -89,7 +90,8 @@ describe('Clean', () => {
       stripFill: true
     });
 
-    assert.ok(!/\s*fill(?::|=").*?[;"]/g.test(content));
+    assert.ok(content.indexOf('fill:') === -1);
+    assert.ok(content.indexOf('fill="') === -1);
   });
 
   it('Should strip styles.', () => {
@@ -97,8 +99,8 @@ describe('Clean', () => {
       stripStyles: true
     });
 
-    assert.ok(!/<style(?:.|\n)*?style>/g.test(content));
-    assert.ok(!/style=".*?"/g.test(content));
+    assert.ok(content.indexOf('style') === -1);
+    assert.ok(content.indexOf('style="') === -1);
   });
 
 });

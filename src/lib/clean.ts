@@ -28,14 +28,13 @@ export function clean(content: string, options: ICleanOptions): string {
       .replace(/\s(xmlns|xmlns:.*?)=".*?"/g, '');
   }
   if (options.stripFill) {
-    content = content.replace(/\sfill(?::|=").*?[;"]/g, '');
+    content = content.replace(/\s*fill(?::|=").*?[;"]/g, '');
   }
   if (options.stripStyles) {
     content = content
       .replace(/\sstyle=".*?"/g, '')
-      .replace(/<style(?:.|\n)*?style>/g, '')
-      .replace(/\sfill(?::|=").*?[;"]/g, '');
-  }
+      .replace(/<style>.*<\/style>/g, '')
+      .replace(/\s*fill(?::|=").*?[;"]/g, '');
   }
 
   return content;
