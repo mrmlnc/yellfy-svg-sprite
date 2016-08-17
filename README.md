@@ -1,6 +1,6 @@
 # yellfy-svg-sprite
 
-> A very simple module to generate SVG sprites.
+> `svg2sprite` wrapper for easy integration into the development process.
 
 [![Travis Status](https://travis-ci.org/mrmlnc/yellfy-svg-sprite.svg?branch=master)](https://travis-ci.org/mrmlnc/yellfy-svg-sprite)
 
@@ -9,10 +9,6 @@
 ```shell
 $ npm i -D yellfy-svg-sprite
 ```
-
-## Why?
-
-Existing solutions have many dependencies.
 
 ## Usage
 
@@ -23,15 +19,13 @@ svgSprite.makeSprite('dir/containing/svg/files').then((result) => {
   console.log(result.sprite);
   // <?xml version="1.0"...
 
-  return result.write('filepath/to/save/sprite');
+  return result.write('filepath/to/save/sprite.svg');
 });
 ```
 
-## Supported options
+## Supported methods
 
-### `makeSprite(dir, [options])` → `result`
-
-### Options
+#### `.makeSprite(sourceDir, ignore, [options])` → `result`
 
 **ignore**
 
@@ -40,63 +34,11 @@ svgSprite.makeSprite('dir/containing/svg/files').then((result) => {
 
 Array glob-patterns for files that will not be added to the sprite.
 
-**parentAttrs**
+**options**
 
-  * Type: `Object`
-  * Default: `{}`
+See [`svg2sprite` repository](https://github.com/mrmlnc/svg2sprite#supported-options).
 
-The attributes that will be added to the root `svg` tag.
-
-**inline**
-
-  * Type: `Boolean`
-  * Default: `false`
-
-If you want to embed the sprite into your HTML source, you will want to set this
-to `true` in order to prevent the creation of SVG namespace declarations and to
-set some other attributes for effectively hiding the library sprite.
-
-**iconAttrs**
-
-  * Type: `Object`
-  * Default: `{}`
-  * Example: `{ viewBox: '0 0 14 14' }`
-
-The attributes of each icon. Current attribute values will be overwritten.
-
-**iconPrefix**
-
-  * Type: `String`
-  * Default: `''`
-
-The name prefix for each icon.
-
-**iconSuffix**
-
-  * Type: `String`
-  * Default: `''`
-
-The name suffix for each icon.
-
-**clean**
-
-  * Type: `Object`
-  * Default: `{}`
-
-```js
-{
-  stripComment: false,         // Strip <!-- * -->
-  stripDescription: false,     // Strip <desc>*</desc>
-  stripEmptyDefinition: false, // Strip empty <defs></defs>
-  stripEmptyGroup: false,      // Strip empty <g></g>
-  stripExtraAttributes: false, // Strip Sketch and xmlns:* attributes
-  stripTitle: false,           // Strip <title>*</title>
-  stripFill: false,            // Strip `fill` attribute (fill="") or fill in the `style` attribute (style="fill:*;")
-  stripStyles: false           // `stripFill` option and strip all `style` attributes
-}
-```
-
-### result
+#### result
 
 **sprite**
 
@@ -107,6 +49,11 @@ Sprite data.
 **write(filepath)**
 
 A feature that allows you to write the resulting sprite to disk.
+
+## Related
+
+  * [svg2sprite](https://github.com/mrmlnc/svg2sprite)
+  * [svg2sprite-cli](https://github.com/mrmlnc/svg2sprite-cli)
 
 ## Changelog
 

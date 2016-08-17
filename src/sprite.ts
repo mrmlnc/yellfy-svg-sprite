@@ -1,107 +1,83 @@
 'use strict';
 
 import * as path from 'path';
+import * as fs from 'fs';
 
-import { readdirPromise, readFilePromise, writeFilePromise } from './lib/io';
-import { makeAttributes, updateAttributes } from './lib/attributes';
-import { clean } from './lib/clean';
+import * as mkdirp from 'mkdirp';
+import * as readdir from 'recursive-readdir';
+import * as svgSprite from 'svg2sprite';
 
-import { IFile, IAttrs, IOptions, IResult, ICleanOptions } from './interfaces';
+function readdirPromise(dir: string, ignore: string[]): Promise<string[]> {
+  return new Promise((resolve, reject) => {
+    readdir(dir, ignore, (err, files) => {
+      if (err) {
+        reject(err);
+      }
 
-const fullTemplate = [
-  '<?xml version="1.0" encoding="iso-8859-1"?>',
-  '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">',
-  '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"$attrs>$icons</svg>'
-].join('');
-
-/**
- * Creates an SVG sprite.
- *
- * @param {string} dir Directory containing SVG files.
- * @param {IOptions} [options] Module options.
- */
-export function makeSprite(dir: string, options?: IOptions): Promise<IResult> {
-  if (!dir) {
-    throw new Error('`dir` required');
-  }
-
-  let template = fullTemplate;
-
-  options = Object.assign({
-    ignore: [],
-    parentAttrs: <IAttrs>{},
-    inline: false,
-    iconAttrs: <IAttrs>{},
-    iconPrefix: '',
-    iconSuffix: '',
-    clean: <ICleanOptions>{}
-  }, options);
-
-  options.clean = Object.assign({
-    stripComment: true,
-    stripEmptyDefinition: true,
-    stripEmptyGroup: true,
-    stripTitle: true,
-    stripDescription: true,
-    stripExtraAttributes: true,
-    stripFill: true,
-    stripStyles: true
-  }, options.clean);
-
-  options.ignore.push('!*.svg');
-
-  if (options.inline) {
-    options.parentAttrs = Object.assign({
-      width: 0,
-      height: 0,
-      style: 'position:absolute'
-    }, options.parentAttrs);
-
-    template = `<svg$attrs>$icons</svg>`;
-  }
-
-  const parentAttrs = makeAttributes(options.parentAttrs);
-
-  template = template.replace('$attrs', parentAttrs);
-
-  return readdirPromise(dir, options.ignore)
-    .then((files) => <any>Promise.all(files.map((filepath) => {
-      const name = path.basename(filepath);
-      return readFilePromise(filepath, 'utf-8').then((content) => ({ name, content }));
-    })))
-    .then((files: IFile[]) => {
-      let sprite = false;
-      const icons = files.map((file) => {
-        if (/svg.*[\n\r\t]*.*?symbol/g.test(file.content)) {
-          sprite = true;
-          file.content = file.content.replace(/<\/*svg.*?>/g, '');
-        }
-        if (/svg.*[\n\r\t]*.*?defs.*[\n\r\t]*.*?g/g.test(file.content)) {
-          sprite = true;
-          file.content = file.content
-            .replace(/<\/*(?:svg|defs).*?>/g, '')
-            .replace(/<(\/*)g(.*)?>/g, '<$1svg$2>');
-        }
-
-        options.iconAttrs.id = options.iconPrefix + path.basename(file.name, '.svg') + options.iconSuffix;
-        if (sprite) {
-          delete options.iconAttrs.id;
-        }
-
-        file.content = clean(file.content, options.clean);
-        file.content = updateAttributes(file, options.iconAttrs);
-        file.content = file.content.replace(/<(\/*)svg/g, '<$1symbol');
-
-        sprite = false;
-
-        return file.content;
-      });
-
-      template = template.replace('$icons', icons.join(''));
-
-      return {
-        sprite: template,
-        write: (filepath: string) => writeFilePromise(filepath, template)
-      };
+      resolve(files);
     });
+  });
+}
+
+function readFilePromise(filepath: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filepath, 'utf-8', (err, data) => {
+      if (err) {
+        reject(err);
+      }
+
+      resolve(data);
+    });
+  });
+}
+
+function writeFilePromise(filepath: string, data: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    mkdirp(path.dirname(filepath), (mkdirpError) => {
+      if (mkdirpError) {
+        reject(mkdirpError);
+      }
+
+      fs.writeFile(filepath, data, (writeError, files) => {
+        if (writeError) {
+          reject(writeError);
+        }
+
+        resolve(files);
+      });
+    });
+  });
+}
+
+export interface IResult {
+  /**
+   * Sprite data.
+   */
+  sprite: string;
+  /**
+   * A feature that allows you to write the resulting sprite to disk.
+   */
+  write: (filepath: string) => void;
+}
+
+export function makeSprite(sourceDir: string, ignore?: string[], options?: IOptions): Promise<IResult> {
+  const sprite = svgSprite.collection(options);
+
+  return readdirPromise(sourceDir, ignore).then((files) => {
+    const promises = files.map((filename) => {
+      return readFilePromise(filename).then((content) => {
+        const name = path.basename(filename, '.svg');
+        sprite.add(name, content);
+      });
+    });
+
+    return Promise.all(promises);
+  }).then(() => {
+    const result = sprite.compile();
+
+    return {
+      sprite: sprite.compile(),
+      write: (filepath: string) => writeFilePromise(filepath, result)
+    };
+  });
 }

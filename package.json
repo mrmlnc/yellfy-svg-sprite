@@ -1,7 +1,7 @@
 {
   "name": "yellfy-svg-sprite",
   "version": "1.0.0-alpha.1",
-  "description": "A very simple module to generate SVG sprites.",
+  "description": "svg2sprite wrapper for easy integration into the development process.",
   "license": "MIT",
   "repository": "mrmlnc/yellfy-svg-sprite",
   "author": {
@@ -21,11 +21,7 @@
   "typings": "out/sprite.d.ts",
   "files": [
     "out/sprite.js",
-    "out/sprite.d.ts",
-    "out/interfaces.d.ts",
-    "out/lib/attributes.js",
-    "out/lib/clean.js",
-    "out/lib/io.js"
+    "out/sprite.d.ts"
   ],
   "keywords": [
     "yellfy",
@@ -36,12 +32,13 @@
   ],
   "dependencies": {
     "mkdirp": "^0.5.1",
-    "recursive-readdir": "^2.0.0"
+    "recursive-readdir": "^2.0.0",
+    "svg2sprite": "^1.0.0"
   },
   "devDependencies": {
     "rimraf": "^2.5.0",
     "typescript": "^1.8.0",
     "tslint": "^3.13.0",
-    "mocha": "^3.0.0-2"
+    "mocha": "^3.0.0"
   }
 }
