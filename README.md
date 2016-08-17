@@ -30,7 +30,7 @@ svgSprite.makeSprite('dir/containing/svg/files').then((result) => {
 **ignore**
 
   * Type: `Array`
-  * Default: `[]`
+  * Default: `['!*.svg']`
 
 Array glob-patterns for files that will not be added to the sprite.
 

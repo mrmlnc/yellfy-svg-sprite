@@ -61,6 +61,8 @@ export interface IResult {
 }
 
 export function makeSprite(sourceDir: string, ignore?: string[], options?: IOptions): Promise<IResult> {
+  ignore = ignore.concat(['!*.svg']);
+
   const sprite = svgSprite.collection(options);
 
   return readdirPromise(sourceDir, ignore).then((files) => {
