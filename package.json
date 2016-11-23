@@ -11,12 +11,6 @@
   "engines": {
     "node": ">=4.0.0"
   },
-  "scripts": {
-    "pretest": "rimraf out .tmp && tslint src/**/*.ts && tsc",
-    "test": "mocha --recursive out",
-    "prepublish": "npm run test",
-    "start": "rimraf out .tmp && tsc --watch"
-  },
   "main": "out/sprite.js",
   "typings": "out/sprite.d.ts",
   "files": [
@@ -32,13 +26,21 @@
   ],
   "dependencies": {
     "mkdirp": "^0.5.1",
-    "recursive-readdir": "^2.0.0",
-    "svg2sprite": "^1.0.0"
+    "recursive-readdir": "^2.1.0",
+    "svg2sprite": "^2.0.0"
   },
   "devDependencies": {
     "rimraf": "^2.5.0",
-    "typescript": "^1.8.0",
+    "typescript": "^2.0.8",
     "tslint": "^3.13.0",
     "mocha": "^3.0.0"
+  },
+  "scripts": {
+    "clean": "rimraf out",
+    "lint": "tslint src/**/*.ts",
+    "compile": "tsc",
+    "test": "mocha out/**/*.spec.js",
+    "build": "npm run clean && npm run lint && npm run compile && npm test",
+    "watch": "npm run clean && npm run lint && npm run compile -- --sourceMap --watch"
   }
 }
