@@ -1,6 +1,6 @@
 {
   "name": "yellfy-svg-sprite",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "svg2sprite wrapper for easy integration into the development process.",
   "license": "MIT",
   "repository": "mrmlnc/yellfy-svg-sprite",
