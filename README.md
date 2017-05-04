@@ -1,5 +1,7 @@
 # yellfy-svg-sprite
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mrmlnc/yellfy-svg-sprite.svg)](https://greenkeeper.io/)
+
 > `svg2sprite` wrapper for easy integration into the development process.
 
 [![Travis Status](https://travis-ci.org/mrmlnc/yellfy-svg-sprite.svg?branch=master)](https://travis-ci.org/mrmlnc/yellfy-svg-sprite)
